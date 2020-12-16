@@ -1,15 +1,15 @@
 # .drone.yml
 
 kind: pipeline
-type: kubernetes
+type: docker
 name: build & Test
 
-trigger:
-  branch:
-    - main
-  event:
-    - push
-    - pull_request
+#trigger:
+#  branch:
+#    - main
+#  event:
+#    - push
+#    - pull_request
 
 steps:
   - name: build
