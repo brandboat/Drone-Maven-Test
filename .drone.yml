@@ -6,7 +6,7 @@ name: build & Test
 
 trigger:
   branch:
-    - drone-ci-integration
+    - master
   event:
     - push
     - pull_request
