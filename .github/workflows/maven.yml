@@ -22,12 +22,10 @@ jobs:
         uses: actions/github-script@v3
         with:
           script: |
+            // GITHUB_BASE_REF is only set for pull request events, otherwise it is ''.
             const isDefaultBranch = process.env.GITHUB_BASE_REF === ''
-            console.log(isDefaultBranch);
-            console.log(process.env.GITHUB_BASE_REF === '')
-            console.log(process.env.GITHUB_BASE_REF == '' )
             if (isDefaultBranch) {
-              return 'true'
+              return true
             }
 
             const okToTest = context.payload.pull_request.labels
