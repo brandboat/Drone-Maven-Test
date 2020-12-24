@@ -22,13 +22,11 @@ jobs:
         uses: actions/github-script@v3
         with:
           script: |
-            console.log(process.env)
-            console.log(process.env.GITHUB_HEAD_REF)
-            console.log(process.env.GITHUB_BASE_REF)
-            const isDefaultBranch = process.env.GITHUB_HEAD_REF === process.env.GITHUB_BASE_REF
+            const 
+            const isDefaultBranch = process.env.GITHUB_BASE_REF === ''
             console.log(isDefaultBranch);
-            console.log(process.env.GITHUB_HEAD_REF === 'main')
-            console.log(process.env.GITHUB_HEAD_REF == 'main' )
+            console.log(process.env.GITHUB_BASE_REF === '')
+            console.log(process.env.GITHUB_BASE_REF == '' )
             if (isDefaultBranch) {
               return 'true'
             }
