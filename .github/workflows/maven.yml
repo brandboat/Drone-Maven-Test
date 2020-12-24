@@ -22,7 +22,6 @@ jobs:
         uses: actions/github-script@v3
         with:
           script: |
-            const 
             const isDefaultBranch = process.env.GITHUB_BASE_REF === ''
             console.log(isDefaultBranch);
             console.log(process.env.GITHUB_BASE_REF === '')
