@@ -22,19 +22,23 @@ jobs:
         uses: actions/github-script@v3
         with:
           script: |
-            const okToTest = context.payload.pull_request.labels
-                 .map(label => label.name)
-                 .includes("ok-to-test")
             console.log(process.env.GITHUB_HEAD_REF + "," + process.env.GITHUB_BASE_REF)
             const isDefaultBranch = process.env.GITHUB_HEAD_REF === process.env.GITHUB_BASE_REF
             console.log(isDefaultBranch);
             console.log(process.env.GITHUB_HEAD_REF === 'master');
             console.log(process.env.GITHUB_HEAD_REF == 'master' );
+            if (isDefaultBranch) {
+              return 'true'
+            }
 
-            if (!okToTest && !isDefaultBranch) {
+            const okToTest = context.payload.pull_request.labels
+                 .map(label => label.name)
+                 .includes("ok-to-test")
+
+            if (!okToTest) {
               core.setFailed("Please add ok-to-test label.");
             }
-            return okToTest || isDefaultBranch
+            return okToTest
           result-encoding: string
       - name: Set output
         id: ok-to-test
