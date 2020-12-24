@@ -45,9 +45,9 @@ jobs:
         id: ok-to-test
         run: echo "::set-output name=enable::${{ steps.check-ci-enable.outputs.result }}"
   build:
-
+    needs: [ ok-to-test ]
+    if: needs.ok-to-test.outputs.enable == 'true'
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 1.8
