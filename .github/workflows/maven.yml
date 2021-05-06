@@ -17,6 +17,10 @@ jobs:
     outputs:
       enable: ${{ steps.ok-to-test.outputs.enable }}
     steps:
+      - name: Get the version
+        id: get_version
+        if: startsWith(github.ref, 'refs/tags/')
+        run: echo ${GITHUB_REF/refs\/tags\//}
       - name: Check if run ci
         id: check-ci-enable
         uses: actions/github-script@v3
