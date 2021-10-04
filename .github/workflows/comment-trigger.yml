@@ -28,8 +28,9 @@ jobs:
               eventName: context.eventName,
               payload: context.payload
             }
-
+            core.info(`${{ steps.check.outputs.comment_body }}`)
             core.info(JSON.stringify(request.payload, null, 2))
+            core.info(`${{ request.payload.comment.body }}`)
             core.info(`${request.eventName}`)
 
   pr-build:
