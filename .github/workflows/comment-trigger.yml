@@ -30,9 +30,9 @@ jobs:
               prBody: context.payload.pull_request.body
             }
 
-            core.info(`${commentBody}`)
-            core.info(`${prBody}`)
-            core.info(`${eventName}`)
+            core.info(`${request.commentBody}`)
+            core.info(`${request.prBody}`)
+            core.info(`${request.eventName}`)
 
   pr-build:
     name: pr-build
