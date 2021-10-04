@@ -55,9 +55,8 @@ jobs:
         id: get_version
         with:
           script: |
-            var commitHash = ${{ fromJSON(steps.get-pr.outputs.result).head.sha }} + "";
-            core.info(`get-pr ${{ fromJSON(steps.get-pr.outputs.result).head.sha }}`)
-            return commitHash.substr(0, 7)
+            var commitHash = `${{ fromJSON(steps.get-pr.outputs.result).head.sha }}`
+            return commitHash.substring(0, 7)
       - name: Generate migration file
         uses: actions/github-script@v3
         with:
