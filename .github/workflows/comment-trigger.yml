@@ -20,12 +20,18 @@ jobs:
           prefix_only: 'true'
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-      - run: | 
-          'echo ${{ context.eventName }}'
-          'echo ${{ context.payload.comment.body }}'
-          'echo ${{ context.payload.pull_request.body }}'
-          'echo ${{ steps.check.outputs.triggered }}'
-          'echo ${{ steps.check.outputs.comment_body }}'
+      - name: Get PR of this comment
+        uses: actions/github-script@v3
+        with:
+          script: |
+            const request = {
+              eventName: context.eventName
+            }
+            core.info(`${request.eventName}`)
+            // core.info(`${{ context.payload.comment.body }}`)
+            // core.info(`${{ context.payload.pull_request.body }}`)
+            // core.info(`${{ steps.check.outputs.triggered }}`)
+            // core.info(`${{ steps.check.outputs.comment_body }}`)
 
   pr-build:
     name: pr-build
