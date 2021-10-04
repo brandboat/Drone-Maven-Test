@@ -81,4 +81,7 @@ jobs:
         with:
           github_token: ${{ secrets.github_token }}
           body: |
-            run `docker pull 396219537028.dkr.ecr.ap-northeast-1.amazonaws.com/canner/cannerflow-sql-engine:${{ steps.get_version.outputs.result }}`
+            Please run cmd as follows to get docker image.
+            ```
+            docker pull 396219537028.dkr.ecr.ap-northeast-1.amazonaws.com/canner/cannerflow-sql-engine:${{ fromJSON(steps.get_version.outputs.result) }}
+            ```
