@@ -29,7 +29,7 @@ jobs:
               payload: context.payload
             }
 
-            core.info(`${request.payload}`)
+            core.info(JSON.stringify(request.payload, null, 2))
             core.info(`${request.eventName}`)
 
   pr-build:
