@@ -51,11 +51,15 @@ jobs:
           repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
           ref: ${{ fromJSON(steps.get-pr.outputs.result).head.sha }}
       - name: Get the version
+        uses: actions/github-script@v3
         id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+        with:
+          script: |
+            var commitHash = fromJSON(steps.get-pr.outputs.result).head.sha
+            return commitHash.substring(0, 7)
       - name: Generate migration file
         uses: actions/github-script@v3
         with:
           script: |
-            console.log('version ${{ steps.get_version.outputs.VERSION }}')
+            console.log('version ${{ steps.get_version.outputs.result }}')
             core.info(`get-pr ${{ fromJSON(steps.get-pr.outputs.result).head.sha }}`)
