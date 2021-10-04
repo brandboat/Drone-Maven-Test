@@ -52,11 +52,10 @@ jobs:
           ref: ${{ fromJSON(steps.get-pr.outputs.result).head.sha }}
       - name: Get the version
         id: get_version
-        if: startsWith(github.ref, 'refs/tags/')
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       - name: Generate migration file
-        if: startsWith(github.ref, 'refs/tags/')
         uses: actions/github-script@v3
         with:
           script: |
-            console.log('${{ steps.get_version.outputs.VERSION }}')
+            console.log('version ${{ steps.get_version.outputs.VERSION }}')
+            core.info(`get-pr ${{ fromJSON(steps.get-pr.outputs.result).head.sha }}`)
