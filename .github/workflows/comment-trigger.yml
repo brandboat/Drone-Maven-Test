@@ -42,21 +42,19 @@ jobs:
             } catch (err) {
               core.setFailed(`Request failed with error ${err}`)
             }
-
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
           repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
           ref: ${{ fromJSON(steps.get-pr.outputs.result).head.sha }}
-
       - name: Get the version
         id: get_version
         if: startsWith(github.ref, 'refs/tags/')
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-
       - name: Generate migration file
         if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/github-script@v3
         with:
           script: |
             core.info(`version ${{ steps.get_version.outputs.VERSION }}`)
