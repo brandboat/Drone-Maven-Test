@@ -59,4 +59,4 @@ jobs:
         uses: actions/github-script@v3
         with:
           script: |
-            core.info(`version ${{ steps.get_version.outputs.VERSION }}`)
+            console.log('${{ steps.get_version.outputs.VERSION }}')
