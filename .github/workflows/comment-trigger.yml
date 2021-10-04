@@ -56,7 +56,7 @@ jobs:
         with:
           script: |
             const commitHash = `${{ fromJSON(steps.get-pr.outputs.result).head.sha }}`
-            const commentBody = `${{ steps.comment-check.outputs.comment_body }}`
+            const commentBody = `${{ needs.comment-check.outputs.comment_body }}`
             // in cannerflow deployer, we use k8s migration job to do cannerflow image migration, 
             // and migration job name format is v{imageTagName}-cannerflow-sql-engine-db-migration
             // Max len in job name is 63, after deducting the length that has been used, the length we can use is 27
@@ -64,7 +64,7 @@ jobs:
             try {
               // validate name
               // https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#syntax-and-character-set
-              var customizedImageTag = commentBody.split('/build ')[1].trim().match(/^(?![._-])[a-zA-Z0-9._-]+(?<![._-])$/)[0]
+              const customizedImageTag = commentBody.split('/build ')[1].trim().match(/^(?![._-])[a-zA-Z0-9._-]+(?<![._-])$/)[0]
               return customizedImageTag.substring(0, maxImageLen)
             }
             catch(err) {
