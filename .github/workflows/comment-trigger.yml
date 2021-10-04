@@ -19,7 +19,7 @@ jobs:
           reaction: rocket
           prefix_only: 'true'
         env:
-        GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
   pr-build:
     name: pr-build
     needs: [ comment-check ]
