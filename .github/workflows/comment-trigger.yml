@@ -20,8 +20,13 @@ jobs:
           prefix_only: 'true'
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-      - run: 'echo ${{ steps.check.outputs.comment_body }}'
-        if: steps.check.outputs.triggered == 'true'
+      - run: | 
+          'echo ${{ context.eventName }}'
+          'echo ${{ context.payload.comment.body }}'
+          'echo ${{ context.payload.pull_request.body }}'
+          'echo ${{ steps.check.outputs.triggered }}'
+          'echo ${{ steps.check.outputs.comment_body }}'
+
   pr-build:
     name: pr-build
     needs: [ comment-check ]
