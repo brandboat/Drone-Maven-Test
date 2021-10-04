@@ -26,12 +26,10 @@ jobs:
           script: |
             const request = {
               eventName: context.eventName,
-              commentBody: context.payload.comment.body,
-              prBody: context.payload.pull_request.body
+              payload: context.payload
             }
 
-            core.info(`${request.commentBody}`)
-            core.info(`${request.prBody}`)
+            core.info(`${request.payload}`)
             core.info(`${request.eventName}`)
 
   pr-build:
