@@ -10,7 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       triggered: ${{ steps.check.outputs.triggered }}
-      comment_body: ${{ steps.check.outputs.comment_body }}
+      # comment_body is blank
+      # https://github.com/Khan/pull-request-comment-trigger/issues/6
+      comment_body: ${{ github.event.comment.body }}
     steps:
       - uses: khan/pull-request-comment-trigger@master
         id: check
@@ -20,18 +22,6 @@ jobs:
           prefix_only: 'true'
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-      - name: Get PR of this comment
-        uses: actions/github-script@v3
-        with:
-          script: |
-            const request = {
-              eventName: context.eventName,
-              payload: context.payload
-            }
-            core.info(`${{ steps.check.outputs.comment_body }}`)
-            core.info(JSON.stringify(request.payload, null, 2))
-            core.info(`${request.payload.comment.body}`)
-            core.info(`${request.eventName}`)
 
   pr-build:
     name: pr-build
