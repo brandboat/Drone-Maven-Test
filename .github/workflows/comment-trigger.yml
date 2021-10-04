@@ -53,9 +53,9 @@ jobs:
           fetch-depth: 0
           repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
           ref: ${{ fromJSON(steps.get-pr.outputs.result).head.sha }}
-      - name: Get the version
+      - name: Get image name
         uses: actions/github-script@v3
-        id: get_version
+        id: get-image-name
         with:
           script: |
             const commitHash = `${{ fromJSON(steps.get-pr.outputs.result).head.sha }}`
@@ -68,17 +68,17 @@ jobs:
               // validate name
               // https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#syntax-and-character-set
               const customizedImageTag = commentBody.split('/build ')[1].trim().match(/^(?![._-])[a-zA-Z0-9._-]+(?<![._-])$/)[0]
-              return customizedImageTag.substring(0, maxImageLen)
+              core.setOutput("imageName", customizedImageTag.substring(0, maxImageLen))
             }
             catch(err) {
               core.error(`Error ${err}, fallback to commit hash ${commitHash}`)
-              return commitHash.substring(0, maxImageLen)
+              core.setOutput("imageName", commitHash.substring(0, maxImageLen))
             }
       - name: Generate migration file
         uses: actions/github-script@v3
         with:
           script: |
-            core.info(`get-pr ${{ steps.get_version.outputs.result }}`)
+            core.info(`get-pr ${{ steps.get-image-name.outputs.imageName }}`)
       - name: Create comment
         uses: actions-ecosystem/action-create-comment@v1
         with:
@@ -86,5 +86,5 @@ jobs:
           body: |
             Please run cmd as follows to get docker image.
             ```
-            docker pull 396219537028.dkr.ecr.ap-northeast-1.amazonaws.com/canner/cannerflow-sql-engine:${{ fromJSON(steps.get_version.outputs.result) }}
+            docker pull 396219537028.dkr.ecr.ap-northeast-1.amazonaws.com/canner/cannerflow-sql-engine:${{ fromJSON(steps.get-image-name.outputs.imageName) }}
             ```
