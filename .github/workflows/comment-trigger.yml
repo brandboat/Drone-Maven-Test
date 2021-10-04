@@ -80,7 +80,5 @@ jobs:
         uses: actions-ecosystem/action-create-comment@v1
         with:
           github_token: ${{ secrets.github_token }}
-          repo: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
-          number: context.issue.number
           body: |
-            docker pull 396219537028.dkr.ecr.ap-northeast-1.amazonaws.com/canner/cannerflow-sql-engine:${{ steps.get_version.outputs.result }}
+            run `docker pull 396219537028.dkr.ecr.ap-northeast-1.amazonaws.com/canner/cannerflow-sql-engine:${{ steps.get_version.outputs.result }}`
