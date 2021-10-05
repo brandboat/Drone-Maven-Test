@@ -85,7 +85,8 @@ jobs:
           github_token: ${{ secrets.github_token }}
           body: |
             - pr-build url : ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-            - image tag: ${{ steps.get-image-name.outputs.imageName }}
+            - image tag: `${{ steps.get-image-name.outputs.imageName }}`
+
             Please run cmd as follows to get docker image after pr-build done.
             ```
             docker pull 396219537028.dkr.ecr.ap-northeast-1.amazonaws.com/canner/cannerflow-sql-engine:${{ steps.get-image-name.outputs.imageName }}
