@@ -1,0 +1,57 @@
+name: build-and-check
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  ok-to-test:
+    runs-on: ubuntu-latest
+    outputs:
+      enable: ${{ steps.ok-to-test.outputs.enable }}
+    steps:
+      - name: Check if run ci
+        id: check-ci-enable
+        uses: actions/github-script@v3
+        with:
+          script: |
+            // GITHUB_BASE_REF is only set for pull request events, otherwise it is ''.
+            const isDefaultBranch = process.env.GITHUB_BASE_REF === ''
+            if (isDefaultBranch) {
+              return true
+            }
+            const okToTest = context.payload.pull_request.labels
+                 .map(label => label.name)
+                 .includes("ok-to-test")
+            if (!okToTest) {
+              core.setFailed("Please add ok-to-test label.");
+            }
+            return okToTest
+          result-encoding: string
+      - name: Set output
+        id: ok-to-test
+        run: echo "::set-output name=enable::${{ steps.check-ci-enable.outputs.result }}"
+  step-1:
+    needs: [ ok-to-test ]
+    if: needs.ok-to-test.outputs.enable == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        run: |
+          echo 'brandboat'
+          # sleep for a long time, then canceled manually
+          sleep 10m
+
+  step-2:
+    needs:
+      - ok-to-test
+      - step-1
+    runs-on: ubuntu-latest
+    if: ${{ needs.ok-to-test.outputs.enable == 'true' || cancelled() }}
+    steps:
+      - name: test
+        run: echo 'brandboat2'
