@@ -43,8 +43,8 @@ jobs:
       - name: test
         run: |
           echo 'brandboat'
-          # sleep for a long time, then canceled manually
-          sleep 10m
+          # ci failed
+          exit 1
 
   step-2:
     needs:
